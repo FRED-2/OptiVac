@@ -1,9 +1,9 @@
 #OptiVac - Designing String-of-beads with optimal spacers
 
-Authors: Benjamin Schubert and Oliver Kohlbacher
-Date: June 2015
-Version: 1.0
-License: This software is under a three-clause BSD license
+Authors: Benjamin Schubert and Oliver Kohlbacher   
+Date: June 2015   
+Version: 1.0  
+License: This software is under a three-clause BSD license  
 
 
 Introduction:
@@ -69,3 +69,18 @@ Arguments:
                         Specifies number of threads. If not specified all
                         available logical cpus are used.
 ```
+Example
+------
+```
+python OptiVacc.py -i example/epitope_list.csv -a example/allele_probabilities_europe.csv -o example/out.txt
+```
+
+Contacts:
+---------
+
+Benjamin Schubert   
+schubert@informatik.uni-tuebingen.de   
+University of Tübingen, Applied Bioinformatics,   
+Center for Bioinformatics, Quantitative Biology Center,   
+and Dept. of Computer Science,   
+Sand 14, 72076 Tübingen, Germany
