@@ -63,6 +63,12 @@ optional arguments:
   -be BETA, --beta BETA
                         Specifies the second-order preference of the user in
                         the model [0,1] (default 0).
+  -cp CLEAVAGE_PREDICTION, --cleavage_prediction CLEAVAGE_PREDICTION
+                        Specifies the used cleavage prediction method (default
+                        PCM) [available: PCM, ProteaSMMConsecutive, ProteaSMMImmuno]
+  -ep EPITOPE_PREDICTION, --epitope_prediction EPITOPE_PREDICTION
+                        Specifies the used epitope prediction method (default
+                        Syfpeithi) [available: Syfpeithi, BIMAS, SMM, SMMPMBEC]
   -thr THRESHOLD, --threshold THRESHOLD
                         Specifies epitope prediction threshold for SYFPEITHI
                         (default 20).
@@ -73,20 +79,18 @@ optional arguments:
                         available logical cpus are used.
 """
 
-import argparse
+import argparse, sys, math
 import multiprocessing as mp
 
+#sys.path.append('/Users/schubert/Dropbox/PhD/Porgramming/Fred2')
+
 from Fred2.IO import FileReader
-from Fred2.Core.Allele import Allele
-from Fred2.Core.Peptide import Peptide
-from Fred2.Core.Protein import Protein
-from Fred2.Core.Base import AEpitopePrediction
+from Fred2.Core import Allele
+from Fred2.Core import Peptide
 from Fred2.EpitopePrediction import EpitopePredictorFactory
-from Fred2.Core.Base import ACleavageSitePrediction
-from Fred2.IO.FileReader import read_lines
 from Fred2.EpitopeAssembly.EpitopeAssembly import EpitopeAssemblyWithSpacer
 from Fred2.CleavagePrediction import CleavageSitePredictorFactory
-from Fred2.Core.Generator import generate_peptides_from_protein
+
 
 def generate_alleles(allele_file, generated=None):
     """
@@ -109,11 +113,11 @@ arising neo-epitopes is reduced. """)
     parser.add_argument("-i", "--input",
                         required=True,
                         help="File containing epitopes (one peptide per line)"
-                        )
+    )
     parser.add_argument("-a", "--alleles",
                         required=True,
                         help="Specifies file containing HLA alleles with corresponding HLA probabilities (one HLA per line)"
-                        )
+    )
 
     #parameters of the model
     parser.add_argument("-k","--max_length",
@@ -128,40 +132,62 @@ arising neo-epitopes is reduced. """)
                         default=0.0,
                         type=float,
                         help="Specifies the second-order preference of the user in the model [0,1] (default 0).")
+
+    parser.add_argument("-cp","--cleavage_prediction",
+                        default="PCM",
+                        help="Specifies the used cleavage prediction method (default PCM) [available: PCM, ProteaSMMConsecutive, ProteaSMMImmuno]"
+    )
+    parser.add_argument("-ep","--epitope_prediction",
+                        default="Syfpeithi",
+                        help="Specifies the used epitope prediction method (default Syfpeithi) [available: Syfpeithi, BIMAS, SMM, SMMPMBEC]"
+    )
     parser.add_argument("-thr","--threshold",
                         default=20,
                         type=float,
                         help="Specifies epitope prediction threshold for SYFPEITHI (default 20).")
 
-
     parser.add_argument("-o", "--output",
                         required=True,
                         help="Specifies the output file.")
     parser.add_argument("-t", "--threads",
-    					type=int,
-    					default=None,
+                        type=int,
+                        default=None,
                         help="Specifies number of threads. If not specified all available logical cpus are used.")
 
 
     args = parser.parse_args()
 
-
-  	#parse input
-    peptides = FileReader.read_lines(args.input, type="Peptide")
+    #parse input
+    peptides = list(FileReader.read_lines(args.input, type=Peptide))
     #read in alleles
     alleles = generate_alleles(args.alleles)
 
+    if args.cleavage_prediction not in ["PCM", "ProteaSMMConsecutive", "ProteaSMMImmuno"]:
+        print "Specified cleavage predictor is currently not supported. Please choose either PCM, ProteaSMMConsecutive, or ProteaSMMImmuno"
+        sys.exit(-1)
+
+    if args.epitope_prediction not in ["Syfpeithi", "BIMAS", "SMM", "SMMPMBEC"]:
+        print "Specified cleavage predictor is currently not supported. Please choose either Syfpeithi, BIMAS, SMM, SMMPMBEC"
+        sys.exit(-1)
 
     #set-up model
-    cl_pred = CleavageSitePredictorFactory("PCM")
-    epi_pred = EpitopePredictorFactory("Syfpeithi")
+    cl_pred = CleavageSitePredictorFactory(args.cleavage_prediction)
+    epi_pred = EpitopePredictorFactory(args.epitope_prediction)
+
+    if args.threshold == 0:
+        pass
+    elif args.epitope_prediction in ["SMM","SMMPMBEC"]:
+        args.threshold = -math.log(args.threshold, 10)
+    elif args.epitope_prediction == "BIMAS":
+        args.threshold = math.log(args.threshold, math.e)
+
 
     thr = {a.name:args.threshold for a in alleles}
 
     solver = EpitopeAssemblyWithSpacer(peptides,cl_pred,epi_pred,alleles,
-                                      k=args.max_length,en=9,threshold=thr,
-                                      solver="cplex", alpha=args.alpha, beta=args.beta,
-                                      verbosity=0)
+                                       k=args.max_length,en=9,threshold=thr,
+                                       solver="cplex", alpha=args.alpha, beta=args.beta,
+                                       verbosity=0)
 
     #solve
     #pre-processing has to be disable otherwise many solver will destroy the symmetry of the problem
@@ -174,7 +200,6 @@ arising neo-epitopes is reduced. """)
     print
     with open(args.output, "w") as f:
         f.write("-".join(map(str,svbws)))
-
 
 
 if __name__ == "__main__":
