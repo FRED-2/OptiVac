@@ -36,7 +36,9 @@ Usage:
 -------------
 ```
 usage: OptiVacc.py [-h] -i INPUT -a ALLELES [-k MAX_LENGTH] [-al ALPHA]
-                        [-be BETA] [-thr THRESHOLD] -o OUTPUT [-t THREADS]
+                   [-be BETA] [-cp CLEAVAGE_PREDICTION]
+                   [-ep EPITOPE_PREDICTION] [-thr THRESHOLD] -o OUTPUT
+                   [-t THREADS]
 ```
 
 The software is a novel approach to construct epitope-based string-of-beads
@@ -45,7 +47,6 @@ length such that the recovery of contained epitopes is maximized and
 immunogenicity of arising neo-epitopes is reduced.
 ```
 Arguments:
-
   -h, --help            show this help message and exit
   -i INPUT, --input INPUT
                         File containing epitopes (one peptide per line)
@@ -60,6 +61,12 @@ Arguments:
   -be BETA, --beta BETA
                         Specifies the second-order preference of the user in
                         the model [0,1] (default 0).
+  -cp CLEAVAGE_PREDICTION, --cleavage_prediction CLEAVAGE_PREDICTION
+                        Specifies the used cleavage prediction method (default
+                        PCM) [available: PCM, ProteaSMMConsecutive, ProteaSMMImmuno]
+  -ep EPITOPE_PREDICTION, --epitope_prediction EPITOPE_PREDICTION
+                        Specifies the used epitope prediction method (default
+                        Syfpeithi) [available: Syfpeithi, BIMAS, SMM, SMMPMBEC]
   -thr THRESHOLD, --threshold THRESHOLD
                         Specifies epitope prediction threshold for SYFPEITHI
                         (default 20).
