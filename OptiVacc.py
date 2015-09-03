@@ -40,8 +40,10 @@ via command line.
 
 Usage:
 -------------
-usage: spacer_design.py [-h] -i INPUT -a ALLELES [-k MAX_LENGTH] [-al ALPHA]
-                        [-be BETA] [-thr THRESHOLD] -o OUTPUT [-t THREADS]
+usage: OptiVacc.py [-h] -i INPUT -a ALLELES [-k MAX_LENGTH] [-al ALPHA]
+                   [-be BETA] [-cp CLEAVAGE_PREDICTION]
+                   [-ep EPITOPE_PREDICTION] [-thr THRESHOLD] -o OUTPUT
+                   [-t THREADS]
 
 The software is a novel approach to construct epitope-based string-of-beads
 vaccines in optimal order and with sequence-optimized spacers of flexible
