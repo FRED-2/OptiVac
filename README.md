@@ -35,7 +35,7 @@ via command line.
 Usage:
 -------------
 ```
-usage: spacer_design.py [-h] -i INPUT -a ALLELES [-k MAX_LENGTH] [-al ALPHA]
+usage: OptiVacc.py [-h] -i INPUT -a ALLELES [-k MAX_LENGTH] [-al ALPHA]
                         [-be BETA] [-thr THRESHOLD] -o OUTPUT [-t THREADS]
 ```
 
