@@ -79,10 +79,10 @@ optional arguments:
                         available logical cpus are used.
 """
 
-import argparse, sys, math
+import argparse
+import sys
+import math
 import multiprocessing as mp
-
-#sys.path.append('/Users/schubert/Dropbox/PhD/Porgramming/Fred2')
 
 from Fred2.IO import FileReader
 from Fred2.Core import Allele
