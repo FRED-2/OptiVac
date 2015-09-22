@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python
 # coding=utf-8
 """
 ###################################################################
@@ -137,7 +137,7 @@ arising neo-epitopes is reduced. """)
 
     parser.add_argument("-cp","--cleavage_prediction",
                         default="PCM",
-                        help="Specifies the used cleavage prediction method (default PCM) [available: PCM, ProteaSMMConsecutive, ProteaSMMImmuno]"
+                        help="Specifies the used cleavage prediction method (default PCM) [available: PCM, PROTEASMM_C, PROTEASMM_S]"
     )
     parser.add_argument("-ep","--epitope_prediction",
                         default="Syfpeithi",
@@ -164,11 +164,11 @@ arising neo-epitopes is reduced. """)
     #read in alleles
     alleles = generate_alleles(args.alleles)
 
-    if args.cleavage_prediction not in ["PCM", "ProteaSMMConsecutive", "ProteaSMMImmuno"]:
-        print "Specified cleavage predictor is currently not supported. Please choose either PCM, ProteaSMMConsecutive, or ProteaSMMImmuno"
+    if args.cleavage_prediction.upper() not in ["PCM", "PROTEASMM_C", "PROTEASMM_S"]:
+        print "Specified cleavage predictor is currently not supported. Please choose either PCM, PROTEASMM_C, or PROTEASMM_S"
         sys.exit(-1)
 
-    if args.epitope_prediction not in ["Syfpeithi", "BIMAS", "SMM", "SMMPMBEC"]:
+    if args.epitope_prediction.upper() not in ["SYFPEITHI", "BIMAS", "SMM", "SMMPMBEC"]:
         print "Specified cleavage predictor is currently not supported. Please choose either Syfpeithi, BIMAS, SMM, SMMPMBEC"
         sys.exit(-1)
 
