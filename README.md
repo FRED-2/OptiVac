@@ -35,7 +35,7 @@ via command line.
 Usage:
 -------------
 ```
-usage: OptiVacc.py [-h] -i INPUT -a ALLELES [-k MAX_LENGTH] [-al ALPHA]
+usage: OptiVac.py [-h] -i INPUT -a ALLELES [-k MAX_LENGTH] [-al ALPHA]
                    [-be BETA] [-cp CLEAVAGE_PREDICTION]
                    [-ep EPITOPE_PREDICTION] [-thr THRESHOLD] -o OUTPUT
                    [-t THREADS]
@@ -79,7 +79,7 @@ Arguments:
 Example
 ------
 ```
-python OptiVacc.py -i example/epitope_list.csv -a example/allele_probabilities_europe.csv -o example/out.txt
+python OptiVac.py -i example/epitope_list.csv -a example/allele_probabilities_europe.csv -o example/out.txt
 ```
 
 Contacts:
