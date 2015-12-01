@@ -176,14 +176,6 @@ arising neo-epitopes is reduced. """)
     cl_pred = CleavageSitePredictorFactory(args.cleavage_prediction)
     epi_pred = EpitopePredictorFactory(args.epitope_prediction)
 
-    if args.threshold == 0:
-        pass
-    elif args.epitope_prediction in ["SMM","SMMPMBEC"]:
-        args.threshold = -math.log(args.threshold, 10)
-    elif args.epitope_prediction == "BIMAS":
-        args.threshold = math.log(args.threshold, math.e)
-
-
     thr = {a.name:args.threshold for a in alleles}
 
     solver = EpitopeAssemblyWithSpacer(peptides,cl_pred,epi_pred,alleles,
