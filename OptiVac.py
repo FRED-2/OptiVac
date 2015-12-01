@@ -160,7 +160,7 @@ arising neo-epitopes is reduced. """)
     args = parser.parse_args()
 
     #parse input
-    peptides = list(FileReader.read_lines(args.input, type=Peptide))
+    peptides = list(FileReader.read_lines(args.input, in_type=Peptide))
     #read in alleles
     alleles = generate_alleles(args.alleles)
 
@@ -195,7 +195,7 @@ arising neo-epitopes is reduced. """)
     #pre-processing has to be disable otherwise many solver will destroy the symmetry of the problem
     #how to do this is dependent on the solver used. For CPLEX it is preprocessing_presolve=n
     threads = mp.cpu_count() if args.threads is None else args.threads
-    svbws = solver.approximate(threads=threads,options="preprocessing_presolve=n,threads=1")
+    svbws = solver.approximate(threads=threads,options={"preprocessing_presolve":"n","threads":1})
 
     print
     print "Resulting String-of-Beads: ","-".join(map(str,svbws))
