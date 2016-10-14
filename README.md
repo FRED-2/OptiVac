@@ -87,7 +87,7 @@ Citation
 
 Please cite:
 
-Schubert, B., & Kohlbacher, O. (2016). Designing string-of-beads vaccines with optimal spacers. Genome medicine, 8(1), 1.
+[Schubert, B., & Kohlbacher, O. (2016). Designing string-of-beads vaccines with optimal spacers. Genome medicine, 8(1), 1.](http://genomemedicine.biomedcentral.com/articles/10.1186/s13073-016-0263-6)
 
 
 Contacts:
