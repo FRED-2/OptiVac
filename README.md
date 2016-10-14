@@ -82,6 +82,14 @@ Example
 python OptiVac.py -i example/epitope_list.csv -a example/allele_probabilities_europe.csv -o example/out.txt
 ```
 
+Citation
+-------
+
+Please cite:
+
+Schubert, B., & Kohlbacher, O. (2016). Designing string-of-beads vaccines with optimal spacers. Genome medicine, 8(1), 1.
+
+
 Contacts:
 ---------
 
