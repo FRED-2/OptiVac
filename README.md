@@ -2,7 +2,7 @@
 
 Authors: Benjamin Schubert and Oliver Kohlbacher   
 Date: June 2015   
-Version: 1.0  
+Version: 1.1  
 License: This software is under a three-clause BSD license  
 
 
@@ -19,7 +19,7 @@ Spacer Design uses the following software and libraries:
 
  1.  Python 2.7 (https://www.python.org/)
  2.  Fred2 (https://github.com/FRED-2/Fred2)
- 3.  Cplex >= 12.5 (www.ilog.com)
+ 3.  Cplex >= 12.5 (www.ilog.com) or other solveres supported by Pyomo (Version 1.1)
  4.  LKH TSP-Approximation >= 2.0.7 (http://www.akira.ruc.dk/~keld/research/LKH/)
 
 Please make sure you have installed said software/libraries
