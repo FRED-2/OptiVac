@@ -156,6 +156,16 @@ arising neo-epitopes is reduced. """)
                         default=None,
                         help="Specifies number of threads. If not specified all available logical cpus are used.")
 
+    parser.add_argument("--ips-solver",
+                        default="cplex",
+                        choices=["cplex", "cbc"],
+                        help="Executable name of the IPS solver. Executable needs to be available in PATH.")
+
+    parser.add_argument("--tsp-solution",
+                        default="approximate",
+                        choices=["approximate", "optimal"],
+                        help="Type of solution of the TSP")
+
 
     args = parser.parse_args()
 
@@ -180,14 +190,18 @@ arising neo-epitopes is reduced. """)
 
     solver = EpitopeAssemblyWithSpacer(peptides,cl_pred,epi_pred,alleles,
                                        k=args.max_length,en=9,threshold=thr,
-                                       solver="cplex", alpha=args.alpha, beta=args.beta,
+                                       solver=args.ips_solver, alpha=args.alpha, beta=args.beta,
                                        verbosity=0)
 
     #solve
     #pre-processing has to be disable otherwise many solver will destroy the symmetry of the problem
     #how to do this is dependent on the solver used. For CPLEX it is preprocessing_presolve=n
     threads = mp.cpu_count() if args.threads is None else args.threads
-    svbws = solver.approximate(threads=threads,options={"preprocessing_presolve":"n","threads":1})
+
+    if args.tsp_solution == "approximate":
+        svbws = solver.approximate(threads=threads,options={"preprocessing_presolve":"n","threads":1})
+    else:
+        svbws = solver.solve(threads=threads,options={"preprocessing_presolve":"n","threads":1})
 
     print
     print "Resulting String-of-Beads: ","-".join(map(str,svbws))
