@@ -85,6 +85,7 @@ import argparse
 import sys
 import math
 import multiprocessing as mp
+import random
 
 from Fred2.IO import FileReader
 from Fred2.Core import Allele
@@ -166,6 +167,14 @@ arising neo-epitopes is reduced. """)
                         choices=["approximate", "optimal"],
                         help="Type of solution of the TSP")
 
+    parser.add_argument("--random-order",
+                        action="store_true",
+                        help="Indicate whether to generate a random ordered string-of-beads polypeptide")
+
+    parser.add_argument("--seed",
+                        type=int,
+                        default=1,
+                        help="Seed for random ordering of string-of-beads polypeptide")
 
     args = parser.parse_args()
 
@@ -202,6 +211,32 @@ arising neo-epitopes is reduced. """)
         svbws = solver.approximate(threads=threads,options={"preprocessing_presolve":"n","threads":1})
     else:
         svbws = solver.solve(threads=threads,options={"preprocessing_presolve":"n","threads":1})
+
+    # Generate random ordered string-of-breads, but still uses optimal spacers
+    # determined from the above solve function.
+    if args.random_order:
+        print "Generating a randomly ordered polypeptide"
+        random.seed(args.seed)
+        random_order_sob = []
+        random.shuffle(peptides)
+        for i in range(len(peptides)):
+
+            # Break from loop once we hit the last peptide
+            if i == len(peptides) - 1:
+                random_order_sob.extend([Peptide(str(peptides[i]))])
+                break
+
+            left_peptide = str(peptides[i])
+            right_peptide = str(peptides[i + 1])
+            opt_spacer = solver.spacer[(left_peptide, right_peptide)]
+
+            # Right peptide gets added in the next iteration
+            random_order_sob.extend([
+                Peptide(left_peptide),
+                Peptide(opt_spacer)
+            ])
+
+        svbws = random_order_sob
 
     print
     print "Resulting String-of-Beads: ","-".join(map(str,svbws))
