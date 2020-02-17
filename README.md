@@ -82,7 +82,7 @@ Example
 python OptiVac.py -i example/epitope_list.csv -a example/allele_probabilities_europe.csv -o example/out.txt
 ```
 
-To create a random ordered string-of-beads polypeptide with optimal spacer
+To create a randomly ordered string-of-beads polypeptide with optimal spacer
 sequences. Here we use the cbc IPS solver for an optimal solution:
 
 ```bash
